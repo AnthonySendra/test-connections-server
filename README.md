@@ -20,5 +20,5 @@ $ TEST_ES=true ES_URL=http://127.0.0.1:6379 npm run start
 ## Test HTTP(s) Endpoint
 
 ```
-$ TEST_HTTP=true HTTP_ENDPOINTS=api=http://127.0.0.1:8080,other_api=http://127.0.0.1:8081 npm run start
+$ TEST_HTTP=true HTTP_ENDPOINTS=api=http://127.0.0.1:8080,other_api=https://google.com npm run start
 ```

@@ -3,7 +3,7 @@ const testRedis = require("./redis");
 const testEs = require("./elasticsearch");
 const httpEndpoints = require("./httpEndpoints");
 
-const port = 3000;
+const port = process.env.PORT;
 
 const requestHandler = async (request, response) => {
   const responses = ["Hello Node.js Server!"];
