@@ -3,6 +3,11 @@ const { Client } = require("@elastic/elasticsearch");
 const URL = process.env.ES_URL || "http://127.0.0.1:9200";
 
 const test = async () => {
+  const status = {
+    host: URL,
+    ok: true
+  };
+
   const client = new Client({
     node: URL
   });
@@ -12,10 +17,10 @@ const test = async () => {
       body: { foo: "bar" }
     });
   } catch (err) {
-    return `Elasticsearch: ${err.name === "ConnectionError" ? "ko" : "ok"}`;
+    status.ok = err.name !== "ConnectionError";
   }
 
-  return `Elasticsearch: ok`;
+  return status;
 };
 
 module.exports = test;

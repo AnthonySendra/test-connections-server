@@ -1,11 +1,14 @@
 const redis = require("redis");
 const sleep = require("./sleep");
 
+const HOST = process.env.REDIS_HOST || "127.0.0.1";
+const PORT = process.env.REDIS_PORT || 6379;
+
 const test = async () => {
   const errors = [];
   const client = redis.createClient({
-    host: process.env.REDIS_HOST || "127.0.0.1",
-    port: process.env.REDIS_PORT || 6379
+    host: HOST,
+    port: PORT
   });
   client.on("error", function(err) {
     errors.push(err);
@@ -14,7 +17,10 @@ const test = async () => {
   await sleep();
   client.quit();
 
-  return `Redis: ${errors.length ? "ko" : "ok"}`;
+  return {
+    host: `${HOST}:${PORT}`,
+    ok: !errors.length
+  };
 };
 
 module.exports = test;

@@ -6,18 +6,19 @@ const httpEndpoints = require("./httpEndpoints");
 const port = process.env.PORT;
 
 const requestHandler = async (request, response) => {
-  const responses = ["Hello Node.js Server!"];
+  const result = {};
   if (process.env.TEST_REDIS) {
-    responses.push(await testRedis());
+    result.redis = await testRedis();
   }
   if (process.env.TEST_ES) {
-    responses.push(await testEs());
+    result.elasticsearch = await testEs();
   }
   if (process.env.TEST_HTTP) {
-    responses.push(await httpEndpoints());
+    result.http = await httpEndpoints();
   }
 
-  response.end(responses.join("\n"));
+  response.setHeader("Content-Type", "application/json");
+  response.end(JSON.stringify(result));
 };
 
 const server = http.createServer(requestHandler);

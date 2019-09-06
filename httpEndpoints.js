@@ -2,27 +2,41 @@ const https = require("https");
 const http = require("http");
 
 const test = async () => {
-  const response = [];
+  const status = [];
   const endpoints = process.env.HTTP_ENDPOINTS.split(",");
 
   for (endpoint of endpoints) {
     const [name, url] = endpoint.split("=");
     try {
-      await request(url.startsWith("https") ? https : http, url);
-      response.push(`${name}(${url}): ok`);
+      const response = await request(
+        url.startsWith("https") ? https : http,
+        url
+      );
+      status.push({
+        name: name,
+        host: url,
+        ok: true,
+        response: response
+      });
     } catch (err) {
-      response.push(`${name}(${url}): ko`);
+      status.push({
+        name: name,
+        host: url,
+        ok: false
+      });
     }
   }
 
-  return response.join("\n");
+  return status;
 };
 
 const request = async (httpModule, url) => {
   return new Promise((resolve, reject) => {
     httpModule
       .get(url, response => {
-        response.on("data", () => resolve());
+        let rawData = "";
+        response.on("data", chunk => (rawData += chunk));
+        response.on("end", () => resolve(JSON.parse(rawData)));
       })
       .on("error", err => reject(err));
   });
