@@ -1,7 +1,8 @@
 const http = require("http");
-const testRedis = require("./redis");
-const testEs = require("./elasticsearch");
-const httpEndpoints = require("./httpEndpoints");
+const testRedis = require("./services/redis");
+const testEs = require("./services/elasticsearch");
+const testHttpEndpoints = require("./services/httpEndpoints");
+const testPostgres = require("./services/postgres");
 
 const port = process.env.PORT || 80;
 
@@ -13,8 +14,11 @@ const requestHandler = async (request, response) => {
   if (process.env.TEST_ES) {
     result.elasticsearch = await testEs();
   }
+  if (process.env.TEST_POSTGRES) {
+    result.postgres = await testPostgres();
+  }
   if (process.env.TEST_HTTP) {
-    result.http = await httpEndpoints();
+    result.http = await testHttpEndpoints();
   }
 
   response.setHeader("Content-Type", "application/json");

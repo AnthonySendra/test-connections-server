@@ -17,6 +17,12 @@ $ TEST_REDIS=true REDIS_HOST=127.0.0.1 REDIS_PORT=6379 npm run start
 $ TEST_ES=true ES_URL=http://127.0.0.1:6379 npm run start
 ```
 
+## Test Postgres
+
+```
+$ TEST_POSTGRES=true POSTGRES_HOST=127.0.0.1 POSTGRES_PORT=5432 POSTGRES_USER=user POSTGRES_DB=db POSTGRES_PASSWORD=mysecretpassword npm run start
+```
+
 ## Test HTTP(s) Endpoint
 
 ```

@@ -1,5 +1,5 @@
 const redis = require("redis");
-const sleep = require("./sleep");
+const sleep = require("../sleep");
 
 const HOST = process.env.REDIS_HOST || "127.0.0.1";
 const PORT = process.env.REDIS_PORT || 6379;
