@@ -12,11 +12,17 @@ const test = async () => {
         url.startsWith("https") ? https : http,
         url
       );
+
+      let formattedResponse = response;
+      try {
+        formattedResponse = JSON.parse(response);
+      } catch (err) {}
+
       status.push({
         name: name,
         host: url,
         ok: true,
-        response: response
+        response: formattedResponse
       });
     } catch (err) {
       status.push({
