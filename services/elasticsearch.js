@@ -8,16 +8,16 @@ const test = async () => {
     ok: true
   };
 
-  const client = new Client({
-    node: URL
-  });
   try {
+    const client = new Client({
+      node: URL
+    });
     await client.search({
       index: "my-index",
       body: { foo: "bar" }
     });
   } catch (err) {
-    status.ok = err.name !== "ConnectionError";
+    status.ok = err.name === "ResponseError";
   }
 
   return status;
