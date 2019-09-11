@@ -10,7 +10,9 @@ const test = async () => {
 
   try {
     const client = new Client({
-      node: URL
+      node: URL,
+      maxRetries: 5,
+      requestTimeout: 1000
     });
     await client.search({
       index: "my-index",
