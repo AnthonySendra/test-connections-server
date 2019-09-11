@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@elastic/elasticsearch": "^7.3.0",
+    "aws-sdk": "^2.526.0",
     "pg": "^7.12.1",
     "redis": "^2.8.0"
   }
