@@ -36,7 +36,7 @@ const request = async (httpModule, url) => {
       .get(url, response => {
         let rawData = "";
         response.on("data", chunk => (rawData += chunk));
-        response.on("end", () => resolve(JSON.parse(rawData)));
+        response.on("end", () => resolve(rawData));
       })
       .on("error", err => reject(err));
   });
