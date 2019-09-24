@@ -13,7 +13,10 @@ const test = async () => {
   };
 
   try {
-    const s3 = new AWS.S3({ apiVersion: "2006-03-01" });
+    const s3 = new AWS.S3({
+      apiVersion: "2006-03-01",
+      maxRetries: 3
+    });
     const filename = `test-connections-server-${new Date().getTime()}`;
     const uploadParams = {
       Bucket: process.env.S3_BUCKET_NAME,
@@ -21,12 +24,14 @@ const test = async () => {
       Body: "test"
     };
     await s3.upload(uploadParams).promise();
+    console.log("upload-after");
     await s3
       .deleteObject({
         Bucket: process.env.S3_BUCKET_NAME,
         Key: filename
       })
       .promise();
+    console.log("delete-after");
   } catch (error) {
     status.ok = false;
     status.error = error;
