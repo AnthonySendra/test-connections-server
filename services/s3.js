@@ -33,6 +33,7 @@ const test = async () => {
       .promise();
     console.log("delete-after");
   } catch (error) {
+    console.log("error", error);
     status.ok = false;
     status.error = error;
   }
