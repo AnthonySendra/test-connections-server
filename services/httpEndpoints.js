@@ -25,6 +25,7 @@ const test = async () => {
         response: formattedResponse
       });
     } catch (err) {
+      console.log("HTTP Error", error);
       status.push({
         name: name,
         host: url,
