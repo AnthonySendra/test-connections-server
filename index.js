@@ -22,9 +22,7 @@ const requestHandler = async (request, response) => {
     result.http = await testHttpEndpoints();
   }
   if (process.env.TEST_S3) {
-    console.log("tests3-before");
     result.s3 = await testS3();
-    console.log("tests3-after");
   }
 
   response.setHeader("Content-Type", "application/json");
