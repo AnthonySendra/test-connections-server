@@ -1,4 +1,5 @@
 const http = require("http");
+const os = require("os");
 const testRedis = require("./services/redis");
 const testEs = require("./services/elasticsearch");
 const testHttpEndpoints = require("./services/httpEndpoints");
@@ -24,6 +25,8 @@ const requestHandler = async (request, response) => {
   if (process.env.TEST_S3) {
     result.s3 = await testS3();
   }
+  
+  result.hostname = os.hostname();
 
   response.setHeader("Content-Type", "application/json");
   response.end(JSON.stringify(result));
