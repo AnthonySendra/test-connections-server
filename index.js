@@ -27,6 +27,7 @@ const requestHandler = async (request, response) => {
   }
   
   result.hostname = os.hostname();
+  result.name = process.env.NAME || Math.random().toString(36).substring(7)
 
   response.setHeader("Content-Type", "application/json");
   response.end(JSON.stringify(result));
