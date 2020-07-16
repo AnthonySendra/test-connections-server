@@ -19,7 +19,7 @@ const test = async () => {
       body: { foo: "bar" }
     });
   } catch (err) {
-    console.log("Elasticsearch Error", error);
+    console.error("Elasticsearch Error", error);
     status.ok = err.name === "ResponseError";
   }
 
