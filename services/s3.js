@@ -34,7 +34,7 @@ const test = async () => {
       })
       .promise();
   } catch (error) {
-    console.log("S3 error", error);
+    console.error("S3 error", error);
     status.ok = false;
     status.error = error;
   }
