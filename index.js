@@ -1,4 +1,5 @@
 const http = require("http");
+const os = require("os");
 const testRedis = require("./services/redis");
 const testEs = require("./services/elasticsearch");
 const testHttpEndpoints = require("./services/httpEndpoints");
@@ -6,6 +7,7 @@ const testPostgres = require("./services/postgres");
 const testS3 = require("./services/s3");
 
 const port = process.env.PORT || 80;
+const name = process.env.NAME || Math.random().toString(36).substring(7);
 
 const requestHandler = async (request, response) => {
   const result = {};
@@ -24,6 +26,9 @@ const requestHandler = async (request, response) => {
   if (process.env.TEST_S3) {
     result.s3 = await testS3();
   }
+  
+  result.hostname = os.hostname();
+  result.name = name;
 
   response.setHeader("Content-Type", "application/json");
   response.end(JSON.stringify(result));

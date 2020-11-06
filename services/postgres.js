@@ -22,7 +22,7 @@ const test = async () => {
     await client.connect();
     client.end();
   } catch (error) {
-    console.log("Postgres Error", error);
+    console.error("Postgres Error", error);
     status.ok = false;
     status.error = error;
   }

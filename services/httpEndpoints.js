@@ -30,8 +30,8 @@ const test = async () => {
         ok: true,
         response: formattedResponse
       });
-    } catch (err) {
-      console.log("HTTP Error", error);
+    } catch (error) {
+      console.error("HTTP Error", error);
       status.push({
         name: name,
         host: url,
@@ -46,7 +46,7 @@ const test = async () => {
 const request = async (httpModule, url) => {
   return new Promise((resolve, reject) => {
     httpModule
-      .get(url, response => {
+      .get(url, {timeout: 5000}, response => {
         let rawData = "";
         response.on("data", chunk => (rawData += chunk));
         response.on("end", () => resolve(rawData));
