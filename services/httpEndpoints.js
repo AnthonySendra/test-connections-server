@@ -3,7 +3,13 @@ const http = require("http");
 
 const test = async () => {
   const status = [];
-  const endpoints = process.env.HTTP_ENDPOINTS.split(",");
+  let endpoints = []
+
+  if (!!process.env.HTTP_ENDPOINTS) {
+    endpoints = process.env.HTTP_ENDPOINTS.split(",");
+  } else {
+    endpoints = ["default=" + process.env.HTTP_ENDPOINT]
+  }
 
   for (endpoint of endpoints) {
     const [name, url] = endpoint.split("=");
