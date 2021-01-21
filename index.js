@@ -10,20 +10,27 @@ const port = process.env.PORT || 80;
 const name = process.env.NAME || Math.random().toString(36).substring(7);
 
 const requestHandler = async (request, response) => {
+  console.log("test connection begin");
+  
   const result = {};
   if (process.env.TEST_REDIS) {
+    console.log("test redis");
     result.redis = await testRedis();
   }
   if (process.env.TEST_ES) {
+    console.log("test es");
     result.elasticsearch = await testEs();
   }
   if (process.env.TEST_POSTGRES) {
+    console.log("test postgres");
     result.postgres = await testPostgres();
   }
   if (process.env.TEST_HTTP) {
+    console.log("test http");
     result.http = await testHttpEndpoints();
   }
   if (process.env.TEST_S3) {
+    console.log("test s3");
     result.s3 = await testS3();
   }
   
