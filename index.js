@@ -50,3 +50,13 @@ server.listen(port, err => {
 
   console.log(`server is listening on ${port}`);
 });
+
+if (process.env.SECOND_PORT) {
+  server.listen(process.env.SECOND_PORT, err => {
+    if (err) {
+      return console.log("something bad happened", err);
+    }
+
+    console.log(`server is listening on ${process.env.SECOND_PORT}`);
+  });
+}
