@@ -52,7 +52,8 @@ server.listen(port, err => {
 });
 
 if (process.env.SECOND_PORT) {
-  server.listen(process.env.SECOND_PORT, err => {
+  const server2 = http.createServer(requestHandler);
+  server2.listen(process.env.SECOND_PORT, err => {
     if (err) {
       return console.log("something bad happened", err);
     }
