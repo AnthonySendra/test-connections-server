@@ -1,10 +1,12 @@
 const http = require("http");
+const url = require("url");
 const os = require("os");
 const testRedis = require("./services/redis");
 const testEs = require("./services/elasticsearch");
 const testHttpEndpoints = require("./services/httpEndpoints");
 const testPostgres = require("./services/postgres");
 const testS3 = require("./services/s3");
+const fibonacci = require("./services/fibonacci");
 
 const port = process.env.PORT || 80;
 const name = process.env.NAME || Math.random().toString(36).substring(7);
@@ -32,6 +34,11 @@ const requestHandler = async (request, response) => {
   if (process.env.TEST_S3) {
     console.log("test s3");
     result.s3 = await testS3();
+  }
+
+  const query = url.parse(request.url, true).query;
+  if (query && query.fibonacci) {
+    result.fibonacci = fibonacci(parseInt(query.fibonacci, 10))
   }
   
   result.hostname = os.hostname();
