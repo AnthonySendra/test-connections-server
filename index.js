@@ -5,6 +5,7 @@ const testRedis = require("./services/redis");
 const testEs = require("./services/elasticsearch");
 const testHttpEndpoints = require("./services/httpEndpoints");
 const testPostgres = require("./services/postgres");
+const testMysql = require("./services/mysql");
 const testS3 = require("./services/s3");
 const fibonacci = require("./services/fibonacci");
 
@@ -26,6 +27,10 @@ const requestHandler = async (request, response) => {
   if (process.env.TEST_POSTGRES) {
     console.log("test postgres");
     result.postgres = await testPostgres();
+  }
+  if (process.env.TEST_MYSQL) {
+    console.log("test mysql");
+    result.mysql = await testMysql();
   }
   if (process.env.TEST_HTTP) {
     console.log("test http");

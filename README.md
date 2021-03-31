@@ -23,6 +23,12 @@ $ TEST_ES=true ES_URL=http://127.0.0.1:6379 npm run start
 $ TEST_POSTGRES=true POSTGRES_HOST=127.0.0.1 POSTGRES_PORT=5432 POSTGRES_USER=user POSTGRES_DB=db POSTGRES_PASSWORD=mysecretpassword npm run start
 ```
 
+## Test Mysql
+
+```
+$ TEST_MYSQL=true MYSQL_HOST=127.0.0.1 MYSQL_PORT=5432 MYSQL_USER=user MYSQL_DB=db MYSQL_PASSWORD=mysecretpassword npm run start
+```
+
 ## Test HTTP(s) Endpoint
 
 ```

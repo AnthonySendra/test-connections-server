@@ -13,7 +13,10 @@ const test = async () => {
     password: process.env.POSTGRES_PASSWORD
   };
   const status = {
-    config: config,
+    config: {
+      host: HOST,
+      port: PORT
+    },
     ok: true
   };
 
