@@ -8,12 +8,12 @@ const getProvider = async () => {
     
     try {
       formattedResponse = JSON.parse(response);
-      return formattedResponse.org
+      return formattedResponse
     } catch (err) {
-      return ""
+      return {error: err}
     }
   } catch (error) {
-    return ""
+    return {error: err}
   }
 };
 

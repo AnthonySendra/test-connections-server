@@ -8,7 +8,7 @@ const testPostgres = require("./services/postgres");
 const testMysql = require("./services/mysql");
 const testS3 = require("./services/s3");
 const fibonacci = require("./services/fibonacci");
-const getProvider = require("./services/getProvider");
+const getIpInfo = require("./services/getIpInfo");
 
 const port = process.env.PORT || 80;
 const name = process.env.NAME || Math.random().toString(36).substring(7);
@@ -49,9 +49,12 @@ const requestHandler = async (request, response) => {
   
   result.hostname = os.hostname();
   result.name = name;
-  result.provider = await getProvider()
 
-  if (process.env.DISPLAY_ENV) {
+  if (process.env.SHOW_IP_INFO) {
+    result.ipinfo = await getIpInfo()
+  }
+
+  if (process.env.SHOW_ENV) {
     result.envVariables = process.env
   }
 
