@@ -5,6 +5,16 @@ $ npm i
 $ npm run start
 ```
 
+## Show more info
+
+```
+SHOW_IP_INFO=true npm run start
+```
+
+```
+SHOW_ENV=true npm run start
+```
+
 ## Test Redis
 
 ```
