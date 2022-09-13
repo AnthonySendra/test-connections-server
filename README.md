@@ -9,6 +9,7 @@
 - [Test S3](#test-s3)
 - [Wait before starting the server](#wait-before-starting-the-server)
 - [Simulate workload (with Fibonacci)](#simulate-workload--with-fibonacci-)
+- [Use Docker](#use-docker)
 
 # How to run?
 
@@ -83,4 +84,15 @@ Once the server is started, call the server with `fibonacci` query URL:
 ```
 PORT=8087 npm run start
 curl http://localhost:8087?fibonacci=30
+```
+
+# Use Docker
+
+```
+docker run \
+  -e PORT=8087 \
+  -e NAME=toto \
+  -e SHOW_ENV=true \
+  -p 8087:8087 \
+  patatra/test-connections-server:latest
 ```
