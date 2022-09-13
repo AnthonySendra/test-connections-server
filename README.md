@@ -1,3 +1,15 @@
+- [How to run?](#how-to-run-)
+- [Show more info](#show-more-info)
+- [Custom Name](#custom-name)
+- [Test Redis](#test-redis)
+- [Test Elasticsearch](#test-elasticsearch)
+- [Test Postgres](#test-postgres)
+- [Test Mysql](#test-mysql)
+- [Test HTTP(s) Endpoint](#test-http-s--endpoint)
+- [Test S3](#test-s3)
+- [Wait before starting the server](#wait-before-starting-the-server)
+- [Simulate workload (with Fibonacci)](#simulate-workload--with-fibonacci-)
+
 # How to run?
 
 ```
@@ -5,7 +17,7 @@ $ npm i
 $ npm run start
 ```
 
-## Show more info
+# Show more info
 
 ```
 SHOW_IP_INFO=true npm run start
@@ -15,38 +27,60 @@ SHOW_IP_INFO=true npm run start
 SHOW_ENV=true npm run start
 ```
 
-## Test Redis
+# Custom Name
+
+```
+NAME=toto npm run start
+```
+
+# Test Redis
 
 ```
 $ TEST_REDIS=true REDIS_HOST=127.0.0.1 REDIS_PORT=6379 npm run start
 ```
 
-## Test Elasticsearch
+# Test Elasticsearch
 
 ```
 $ TEST_ES=true ES_URL=http://127.0.0.1:6379 npm run start
 ```
 
-## Test Postgres
+# Test Postgres
 
 ```
 $ TEST_POSTGRES=true POSTGRES_HOST=127.0.0.1 POSTGRES_PORT=5432 POSTGRES_USER=user POSTGRES_DB=db POSTGRES_PASSWORD=mysecretpassword npm run start
 ```
 
-## Test Mysql
+# Test Mysql
 
 ```
 $ TEST_MYSQL=true MYSQL_HOST=127.0.0.1 MYSQL_PORT=5432 MYSQL_USER=user MYSQL_DB=db MYSQL_PASSWORD=mysecretpassword npm run start
 ```
 
-## Test HTTP(s) Endpoint
+# Test HTTP(s) Endpoint
 
 ```
 $ TEST_HTTP=true HTTP_ENDPOINTS=api=http://127.0.0.1:8080,other_api=https://google.com npm run start
 ```
 
-## Test S3
+# Test S3
 
 ```
 $ TEST_S3=true S3_BUCKET_NAME=bucketname S3_REGION=eu-west-1 AWS_ACCESS_KEY_ID=<access_key> AWS_SECRET_ACCESS_KEY=<secret_key> npm run start
+```
+
+# Wait before starting the server
+
+Wait 5000ms:
+```
+WAIT=5000 npm run start
+```
+
+# Simulate workload (with Fibonacci)
+
+Once the server is started, call the server with `fibonacci` query URL:
+
+```
+PORT=8087 npm run start
+curl http://localhost:8087?fibonacci=30
 ```

@@ -12,6 +12,7 @@ const getIpInfo = require("./services/getIpInfo");
 
 const port = process.env.PORT || 80;
 const name = process.env.NAME || Math.random().toString(36).substring(7);
+const waitBeforeStartServer = process.env.WAIT ? parseInt(process.env.WAIT, 10) : 0
 
 const requestHandler = async (request, response) => {
   console.log("test connection begin");
@@ -64,21 +65,23 @@ const requestHandler = async (request, response) => {
 
 const server = http.createServer(requestHandler);
 
-server.listen(port, err => {
-  if (err) {
-    return console.log("something bad happened", err);
-  }
-
-  console.log(`server is listening on ${port}`);
-});
-
-if (process.env.SECOND_PORT) {
-  const server2 = http.createServer(requestHandler);
-  server2.listen(process.env.SECOND_PORT, err => {
+setTimeout(() => {
+  server.listen(port, err => {
     if (err) {
       return console.log("something bad happened", err);
     }
 
-    console.log(`server is listening on ${process.env.SECOND_PORT}`);
+    console.log(`server is listening on ${port}`);
   });
-}
+
+  if (process.env.SECOND_PORT) {
+    const server2 = http.createServer(requestHandler);
+    server2.listen(process.env.SECOND_PORT, err => {
+      if (err) {
+        return console.log("something bad happened", err);
+      }
+
+      console.log(`server is listening on ${process.env.SECOND_PORT}`);
+    });
+  }
+}, waitBeforeStartServer)
