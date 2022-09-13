@@ -9,6 +9,8 @@
 - [Test S3](#test-s3)
 - [Wait before starting the server](#wait-before-starting-the-server)
 - [Simulate workload (with Fibonacci)](#simulate-workload--with-fibonacci-)
+- [ls-directory](#ls-directory)
+- [touch](#touch-file)
 - [Use Docker](#use-docker)
 
 # How to run?
@@ -84,6 +86,21 @@ Once the server is started, call the server with `fibonacci` query URL:
 ```
 PORT=8087 npm run start
 curl http://localhost:8087?fibonacci=30
+```
+
+# LS directory
+
+```
+LS_DIR=/my/path npm run start
+```
+
+# Touch file
+
+```
+PORT=8087 TOUCH=/my/file.txt npm run start
+curl http://localhost:8087 # ignore touch and return last access time of file /my/file.txt
+curl http://localhost:8087?touch=1 # create and set access time of file /my/file.txt to now
+curl http://localhost:8087?touch=2022-09-11T13:46:03.668Z # create and set access time of file /my/file.txt to "2022-09-11T13:46:03.668Z"
 ```
 
 # Use Docker

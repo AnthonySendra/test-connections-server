@@ -9,6 +9,8 @@ const testMysql = require("./services/mysql");
 const testS3 = require("./services/s3");
 const fibonacci = require("./services/fibonacci");
 const getIpInfo = require("./services/getIpInfo");
+const lsDir = require("./services/ls");
+const touch = require("./services/touch");
 
 const port = process.env.PORT || 80;
 const name = process.env.NAME || Math.random().toString(36).substring(7);
@@ -17,6 +19,8 @@ const waitBeforeStartServer = process.env.WAIT ? parseInt(process.env.WAIT, 10) 
 const requestHandler = async (request, response) => {
   console.log("test connection begin");
   
+  const query = url.parse(request.url, true).query;
+
   const result = {};
   if (process.env.TEST_REDIS) {
     console.log("test redis");
@@ -42,8 +46,15 @@ const requestHandler = async (request, response) => {
     console.log("test s3");
     result.s3 = await testS3();
   }
-
-  const query = url.parse(request.url, true).query;
+  if (process.env.TOUCH) {
+    console.log("touch file");
+    result.touch = await touch(query)
+  }
+  if (process.env.LS_DIR) {
+    console.log("ls directory");
+    result.ls = await lsDir() 
+  }
+  
   if (query && query.fibonacci) {
     result.fibonacci = fibonacci(parseInt(query.fibonacci, 10))
   }
