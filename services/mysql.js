@@ -18,25 +18,37 @@ const test = async () => {
       host: HOST,
       port: PORT
     },
+    timings: {
+      connectDurationMs: undefined,
+      selectDurationMs: undefined,
+    },
     ok: true
   };
 
   try {
     const connection = mysql.createConnection(config);
     await new Promise((resolve, reject) => {
+      startConnect = process.hrtime.bigint()
+
       connection.connect((err) => {
         if (err) {
           return reject(err)
         }
+
+        status.timings.connectDurationMs = Number((process.hrtime.bigint() - startConnect) / 1000000n)
         resolve()
       });
     })
 
     await new Promise((resolve, reject) => {
+      startSelect = process.hrtime.bigint()
+
       connection.query("SELECT 1", (err) => {
         if (err) {
           return reject(err)
         }
+
+        status.timings.selectDurationMs = Number((process.hrtime.bigint() - startSelect) / 1000000n)
         resolve()
       });
     })
