@@ -14,21 +14,22 @@ const test = async () => {
   for (endpoint of endpoints) {
     const [name, url] = endpoint.split("=");
     try {
-      const response = await request(
+      const {rawData, timings} = await request(
         url.startsWith("https") ? https : http,
         url
       );
 
-      let formattedResponse = response;
+      let formattedResponse = rawData;
       try {
-        formattedResponse = JSON.parse(response);
+        formattedResponse = JSON.parse(rawData)
       } catch (err) {}
 
       status.push({
         name: name,
         host: url,
         ok: true,
-        response: formattedResponse
+        response: formattedResponse,
+        timings
       });
     } catch (error) {
       console.error("HTTP Error", error);
@@ -44,14 +45,43 @@ const test = async () => {
 };
 
 const request = async (httpModule, url) => {
+  start = process.hrtime.bigint()
+  const timings = {
+    start: undefined,
+    dnsLookupMs: undefined,
+    tcpConnectionMs: undefined,
+    tlsHandshakeMs: undefined,
+    firstByteMs: undefined,
+    endMs: undefined,
+  }
+
   return new Promise((resolve, reject) => {
-    httpModule
-      .get(url, {timeout: 5000}, response => {
+    const req = httpModule
+      .get(url, {timeout: 5000}, res => {
         let rawData = "";
-        response.on("data", chunk => (rawData += chunk));
-        response.on("end", () => resolve(rawData));
+
+        res.once('readable', () => (timings.firstByteAt = Number((process.hrtime.bigint() - start) / 1000000n) ))
+        res.on("data", chunk => (rawData += chunk));
+        
+        res.on('end', () => {
+          resolve({
+            rawData,
+            timings: {
+              ...timings, 
+              start: Number(start), 
+              endMs: Number((process.hrtime.bigint() - start) / 1000000n)
+            }
+          })
+        })
       })
-      .on("error", err => reject(err));
+
+    req.on('socket', (socket) => {
+      socket.on('lookup', () => (timings.dnsLookupMs = Number((process.hrtime.bigint() - start) / 1000000n)))
+      socket.on('connect', () => (timings.tcpConnectionMs = Number((process.hrtime.bigint() - start) / 1000000n)))
+      socket.on('secureConnect', () => (timings.tlsHandshakeMs = Number((process.hrtime.bigint() - start) / 1000000n)))
+    })
+    
+    req.on("error", err => reject(err));
   });
 };
 
