@@ -22,27 +22,27 @@ const requestHandler = async (request, response) => {
   const query = url.parse(request.url, true).query;
 
   const result = {};
-  if (process.env.TEST_REDIS) {
+  if (process.env.REDIS_HOST) {
     console.log("test redis");
     result.redis = await testRedis();
   }
-  if (process.env.TEST_ES) {
+  if (process.env.ES_URL) {
     console.log("test es");
     result.elasticsearch = await testEs();
   }
-  if (process.env.TEST_POSTGRES) {
+  if (process.env.POSTGRES_HOST) {
     console.log("test postgres");
     result.postgres = await testPostgres();
   }
-  if (process.env.TEST_MYSQL) {
+  if (process.env.MYSQL_HOST) {
     console.log("test mysql");
     result.mysql = await testMysql();
   }
-  if (process.env.TEST_HTTP) {
+  if (process.env.HTTP_ENDPOINTS) {
     console.log("test http");
     result.http = await testHttpEndpoints();
   }
-  if (process.env.TEST_S3) {
+  if (process.env.S3_BUCKET_NAME) {
     console.log("test s3");
     result.s3 = await testS3();
   }
