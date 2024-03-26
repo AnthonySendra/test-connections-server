@@ -11,7 +11,7 @@ const test = async () => {
     port: PORT
   });
   client.on("error", function(err) {
-    console.error("Redis error", error);
+    console.error("Redis error", err);
     errors.push(err);
   });
 
