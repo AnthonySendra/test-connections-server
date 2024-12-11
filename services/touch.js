@@ -24,11 +24,11 @@ const touch = async (query) => {
 
 const touchFile = async (path, atime) => {
   if (!fs.existsSync(path)) {
-    await createFile(path)
+    await createFile(path, atime.toISOString());
   }
   
-  return accessFile(path, atime)
-}
+  return accessFile(path, atime);
+};
 
 const stat = async (path) => {
   if (!fs.existsSync(path)) {
@@ -36,36 +36,49 @@ const stat = async (path) => {
   }
 
   return new Promise((resolve, reject) => {
-    fs.stat(path, (error, stats) => {
+    fs.readFile(path, 'utf8', (error, content) => {
       if (error) {
         return reject(error)
       }
-    
-      resolve(stats.atime)
+      
+      try {
+        // Parse the date from the file content
+        const date = new Date(content)
+        resolve(date)
+      } catch (err) {
+        reject(new Error('Invalid date format in file'))
+      }
     });
   })
 }
 
-const createFile = (path) => {
+const createFile = (path, content) => {
   return new Promise((resolve, reject) => {
-    fs.open(path, 'w', (err) => {
+    fs.writeFile(path, content, (err) => {
       if (err) {
-        return reject(err)
+        return reject(err);
       }
-
-      resolve()
-    })
-  })
-}
+      resolve();
+    });
+  });
+};
 
 const accessFile = (path, atime) => {
   return new Promise((resolve, reject) => {
-    fs.utimes(path, atime, atime, (err) => {
-      if (err) {
-        return reject(err)
+    // First write the new date to the file
+    fs.writeFile(path, atime.toISOString(), (writeErr) => {
+      if (writeErr) {
+        return reject(writeErr);
       }
+      
+      // Then update the file timestamps
+      fs.utimes(path, atime, atime, (err) => {
+        if (err) {
+          return reject(err)
+        }
 
-      resolve()
+        resolve()
+      })
     })
   })
 }
