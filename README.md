@@ -66,6 +66,12 @@ $ MYSQL_HOST=127.0.0.1 MYSQL_PORT=5432 MYSQL_USER=user MYSQL_DB=db MYSQL_PASSWOR
 $ HTTP_ENDPOINTS=api=http://127.0.0.1:8080,other_api=https://google.com npm run start
 ```
 
+# Test UDP connection
+
+```
+$ UDP_PORT=3030 npm run start
+```
+
 # Test S3
 
 ```
