@@ -6,6 +6,7 @@
 - [Test Postgres](#test-postgres)
 - [Test Mysql](#test-mysql)
 - [Test HTTP(s) Endpoint](#test-http-s--endpoint)
+- [Test UDP Connection](#test-udp-connection)
 - [Test S3](#test-s3)
 - [ls-directory](#ls-directory)
 - [touch](#touch-file)
@@ -66,7 +67,7 @@ $ MYSQL_HOST=127.0.0.1 MYSQL_PORT=5432 MYSQL_USER=user MYSQL_DB=db MYSQL_PASSWOR
 $ HTTP_ENDPOINTS=api=http://127.0.0.1:8080,other_api=https://google.com npm run start
 ```
 
-# Test UDP connection
+# Test UDP Connection
 
 ```
 $ UDP_PORT=3030 npm run start
