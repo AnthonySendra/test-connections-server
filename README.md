@@ -11,6 +11,7 @@
 - [ls-directory](#ls-directory)
 - [touch](#touch-file)
 - [Wait before starting the server](#wait-before-starting-the-server)
+- [Close application after a delay](#close-application-after-a-delay)
 - [Simulate workload (with Fibonacci)](#simulate-workload--with-fibonacci-)
 - [Use Docker](#use-docker)
 
@@ -100,6 +101,14 @@ Wait 5000ms:
 ```
 WAIT=5000 npm run start
 ```
+
+# Close application after a delay
+
+Exit after 10 seconds:
+```
+CLOSE_AFTER=10000 npm run start
+```
+The application will automatically exit after the specified number of milliseconds.
 
 # Simulate workload (with Fibonacci)
 

@@ -159,3 +159,15 @@ setTimeout(() => {
     }
   }
 }, waitBeforeStartServer)
+
+// Handle CLOSE_AFTER environment variable to exit after a delay
+if (process.env.CLOSE_AFTER) {
+  const closeAfter = parseInt(process.env.CLOSE_AFTER, 10);
+  if (!isNaN(closeAfter) && closeAfter > 0) {
+    console.log(`Application will exit after ${closeAfter}ms.`);
+    setTimeout(() => {
+      console.log('Bye!');
+      process.exit(0);
+    }, closeAfter);
+  }
+}
