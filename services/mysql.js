@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+const mysql = require("mysql2/promise");
 const sleep = require("../sleep");
 
 const HOST = process.env.MYSQL_HOST || "127.0.0.1";
@@ -10,7 +10,14 @@ const test = async () => {
     port: PORT,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
-    database:  process.env.MYSQL_DB,
+    database: process.env.MYSQL_DB,
+    // Add MySQL 9 compatibility options
+    authPlugins: {
+      mysql_clear_password: () => () => Buffer.from(process.env.MYSQL_PASSWORD || ''),
+    },
+    // Enable support for newer MySQL features
+    supportBigNumbers: true,
+    bigNumberStrings: true,
   }
 
   const status = {
@@ -26,34 +33,15 @@ const test = async () => {
   };
 
   try {
-    const connection = mysql.createConnection(config);
-    await new Promise((resolve, reject) => {
-      startConnect = process.hrtime.bigint()
+    const startConnect = process.hrtime.bigint();
+    const connection = await mysql.createConnection(config);
+    status.timings.connectDurationMs = Number((process.hrtime.bigint() - startConnect) / 1000000n);
 
-      connection.connect((err) => {
-        if (err) {
-          return reject(err)
-        }
-
-        status.timings.connectDurationMs = Number((process.hrtime.bigint() - startConnect) / 1000000n)
-        resolve()
-      });
-    })
-
-    await new Promise((resolve, reject) => {
-      startSelect = process.hrtime.bigint()
-
-      connection.query("SELECT 1", (err) => {
-        if (err) {
-          return reject(err)
-        }
-
-        status.timings.selectDurationMs = Number((process.hrtime.bigint() - startSelect) / 1000000n)
-        resolve()
-      });
-    })
+    const startSelect = process.hrtime.bigint();
+    await connection.execute("SELECT 1");
+    status.timings.selectDurationMs = Number((process.hrtime.bigint() - startSelect) / 1000000n);
     
-    connection.end();
+    await connection.end();
   } catch (error) {
     console.error("MySQL Error", error);
     status.ok = false;
